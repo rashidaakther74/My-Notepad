@@ -19,12 +19,12 @@ const handleCreateNote = async (req, res, next) => {
       title,
       description,
       image: imageUrl,
-      user: req.user._id,
+      user: req.user.userId,
     });
 
     res.status(201).json({
       success: true,
-      message: "Note created",
+      message: "Note created successfully",
       payload: note,
     });
   } catch (error) {
@@ -52,8 +52,7 @@ const handleSingleNote = async (req, res, next) => {
       });
     }
 
-    // Only owner or admin can access
-    if (!req.user.isAdmin && note.user.toString() !== req.user._id) {
+    if (!req.user.isAdmin && note.user.toString() !== req.user.userId) {
       return res.status(403).json({
         success: false,
         message: "Access denied",
@@ -73,12 +72,27 @@ const handleSingleNote = async (req, res, next) => {
 // UPDATE
 const handleUpdateNote = async (req, res, next) => {
   try {
-    const note = await updateNote(req.params.id, req.body);
+    const note = await getSingleNote(req.params.id);
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+      });
+    }
+
+    if (!req.user.isAdmin && note.user.toString() !== req.user.userId) 
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+
+    const updatedNote = await updateNote(req.params.id, req.body);
 
     res.json({
       success: true,
-      message: "Note updated",
-      payload: note,
+      message: "Note updated successfully",
+      payload: updatedNote,
     });
   } catch (error) {
     next(error);
@@ -92,7 +106,7 @@ const handleDeleteNote = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: "Note deleted",
+      message: "Note deleted successfully",
     });
   } catch (error) {
     next(error);

@@ -5,8 +5,6 @@ const upload = require("../middlewares/upload");
 const { handleCreateNote, handleGetNotes, handleSingleNote, handleUpdateNote, handleDeleteNote } = require("../controllers/noteController");
 const { verifyToken } = require("../middlewares/auth");
 
-console.log("handleCreateNote:", handleCreateNote);
-
 router.post("/",verifyToken, upload.single("image"), handleCreateNote);
 
 router.get("/",verifyToken, handleGetNotes);

@@ -8,9 +8,9 @@ const { port, mongodburl } = require("./secret");
 const connectDB = require("./config/db");
 const { errorResponse } = require("./controllers/responseController");
 const app = express();
-app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRouter);
 app.use("/api/notes", noteRouter);
 app.use("/uploads", express.static("public/uploads"));

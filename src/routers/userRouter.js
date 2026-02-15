@@ -6,10 +6,10 @@ const { loginUser } = require('../services/userServices');
 const router = express.Router();
 
 router.post("/create-user", handleCreateUser);
-router.get("/",verifyToken,isAdmin, handleGetAllUsers);
+router.get("/", verifyToken, isAdmin, handleGetAllUsers);
 router.get("/:id",verifyToken, handleGetSingleUser);
 router.put("/:id",verifyToken, handleUpdateUser);
-router.delete("/:id", handleDeleteUser);
+router.delete("/:id",verifyToken, handleDeleteUser);
 router.post("/login", handleLoginUser);
 
 module.exports = router;

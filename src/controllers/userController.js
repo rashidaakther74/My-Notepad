@@ -41,7 +41,6 @@ const handleGetSingleUser = async (req, res, next) => {
     const { id } = req.params;
     const loggedInUserId = req.user.userId;
 
-    // Authorization check
     if (id !== loggedInUserId && !req.user.isAdmin) {
       return res.status(403).json({
         success: false,
@@ -49,7 +48,6 @@ const handleGetSingleUser = async (req, res, next) => {
       });
     }
 
-    // Fetch user safely
     const user = await getSingleUser(id);
 
     return res.status(200).json({

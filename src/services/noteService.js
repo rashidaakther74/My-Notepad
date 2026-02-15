@@ -20,8 +20,15 @@ const getSingleNote = async (id) => {
 };
 
 // UPDATE
-const updateNote = async (id, data) => {
-  return await Note.findByIdAndUpdate(id, data, { new: true });
+const updateNote = async (noteId, data) => {
+  const updatedNote = await Note.findByIdAndUpdate(
+    noteId,
+    data,
+    { 
+     returnDocument: 'after',
+     runValidators: true }
+  );
+  return updatedNote;
 };
 
 // DELETE

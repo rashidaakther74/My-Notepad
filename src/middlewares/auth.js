@@ -18,9 +18,16 @@ const verifyToken = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) => {
-  if (!req.user) return next(createError(401, "Unauthorized"));
-  if (!req.user.isAdmin) return next(createError(403, "Admin access only"));
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  if (!req.user.isAdmin) {
+    return res.status(403).json({ message: "Admin access only" });
+  }
+
   next();
 };
+
 
 module.exports = { isAdmin,verifyToken };
